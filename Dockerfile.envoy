@@ -1,0 +1,8 @@
+FROM envoyproxy/envoy:v1.18.3
+
+COPY ./envoy.yaml /etc/envoy/envoy.yaml
+COPY ./proto.pb /tmp/envoy/proto.pb
+
+EXPOSE 1337
+
+CMD /usr/local/bin/envoy -c /etc/envoy/envoy.yaml

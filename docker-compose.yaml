@@ -1,0 +1,46 @@
+version: '3.7'
+services:
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    environment:
+      USER_SERVICE_DB: postgres://dpmajyjy:E8JDF1mIwV3pEZhduB_jVfYHWWURwcav@fanny.db.elephantsql.com/dpmajyjy
+      SECRET_KEY: SECRET_KEY_SECRET_KEY
+      REDIS_URL: redis-19907.c10.us-east-1-3.ec2.cloud.redislabs.com:19907
+      REDIS_PWD: 20MMAKGNrYEAOvNyP8RcPgM4WMTHAaxl
+    expose:
+      - '8123'
+    ports:
+      - '8123:5050'
+
+  transaction-service:
+    build:
+      context: ./transaction-service
+      dockerfile: Dockerfile
+    environment:
+      TXN_SERVICE_DB: postgres://ajxvpnjl:hgCi_TQJsOuJ9LKx7FMp7RAOycI1kHgW@fanny.db.elephantsql.com/ajxvpnjl
+      SECRET_KEY: SECRET_KEY_SECRET_KEY
+      REDIS_URL: redis-19907.c10.us-east-1-3.ec2.cloud.redislabs.com:19907
+      REDIS_PWD: 20MMAKGNrYEAOvNyP8RcPgM4WMTHAaxl
+    expose:
+      - '8124'
+    ports:
+      - '8124:5060'
+
+
+  envoy:
+    build:
+      context: .
+      dockerfile: Dockerfile.envoy
+    volumes:
+      - ./envoy.yaml:/etc/envoy/envoy.yaml
+    expose:
+      - '8888'
+      - '1337'
+    ports:
+      - '8888:8888'
+      - '1337:1337'
+
+networks:
+  envoymesh: {}
