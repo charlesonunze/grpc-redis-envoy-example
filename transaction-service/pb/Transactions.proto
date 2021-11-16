@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package transaction;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/charlesonunze/grpc-redis-envoy-example/transaction-service/pb";
+
+service TransactionServiceRPC {
+  rpc CreditAccount (CreditAccountRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/transactions/up"
+      body: "body"
+    };
+  }
+
+  rpc DebitAccount (DebitAccountRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/transactions/down",
+      body: "body"
+    };
+  }
+};
+
+message CreditAccountRequestBody {
+  string token = 1;
+  int32 amount = 2;
+}
+
+message CreditAccountRequest {
+  CreditAccountRequestBody body = 1;
+}
+
+message DebitAccountRequestBody {
+  string token = 1;
+  int32 amount = 2;
+}
+
+message DebitAccountRequest {
+  DebitAccountRequestBody body = 1;
+}
+
