@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package user;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/charlesonunze/grpc-redis-envoy-example/user-service/pb";
+
+service UserServiceRPC {
+  rpc Login (LoginRequest) returns (LoginResponse) {
+    option (google.api.http) = {
+      post: "/user/login"
+      body: "body"
+    };
+  }
+
+  rpc GetUserBalance (GetUserBalanceRequest) returns (GetUserBalanceResponse) {
+    option (google.api.http) = {
+      post: "/user/balance",
+      body: "body"
+    };
+  }
+};
+
+message LoginRequestBody {
+  string name = 1;
+}
+
+message LoginRequest {
+  LoginRequestBody body = 1;
+}
+ 
+message LoginResponse {
+  string token = 1;
+}
+
+message UserBalanceRequestBody {
+  string token = 1;
+}
+
+message GetUserBalanceRequest {
+  UserBalanceRequestBody body = 1;
+}
+
+message GetUserBalanceResponse {
+  int32 amount = 1;
+}
